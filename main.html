@@ -1,16 +1,73 @@
 <!DOCTYPE html>
-
-<html>
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="./styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Shopping List</title>
 </head>
-
 <body>
-	<!-- the entire body must be written by student -->
-    <script type="text/javascript" src="./script.js">
+
+<h2>Shopping List</h2>
+
+<label for="item-name-input">Item Name:</label>
+<input type="text" id="item-name-input" aria-label="Item Name" required><br><br>
+
+<label for="item-price-input">Price:</label>
+<input type="number" id="item-price-input" aria-label="Price" required><br><br>
+
+<button id="add">Add</button><br><br>
+
+<table>
+  <thead>
+    <tr>
+      <th id="item">Item</th>
+      <th id="price">Price</th>
+    </tr>
+  </thead>
+  <tbody id="list"></tbody>
+</table>
+
+<h3 id="total">Grand Total: $0</h3>
+
+<script>
+document.getElementById('add').addEventListener('click', function() {
+  var itemName = document.getElementById('item-name-input').value.trim();
+  var itemPrice = parseFloat(document.getElementById('item-price-input').value.trim());
+
+  if (itemName === '' || isNaN(itemPrice) || itemPrice <= 0) {
+    alert('Please enter valid item name and price.');
+    return;
+  }
+
+  addItemToList(itemName, itemPrice);
+  document.getElementById('item-name-input').value = '';
+  document.getElementById('item-price-input').value = '';
+});
+
+function addItemToList(name, price) {
+  var list = document.getElementById('list');
+  var newRow = document.createElement('tr');
+
+  var itemNameCell = document.createElement('td');
+  itemNameCell.textContent = name;
+  newRow.appendChild(itemNameCell);
+
+  var itemPriceCell = document.createElement('td');
+  itemPriceCell.textContent = '$' + price.toFixed(2);
+  newRow.appendChild(itemPriceCell);
+
+  list.appendChild(newRow);
+
+  updateGrandTotal(price);
+}
+
+function updateGrandTotal(price) {
+  var totalElement = document.getElementById('total');
+  var currentTotal = parseFloat(totalElement.textContent.replace('Grand Total: $', ''));
+  var newTotal = currentTotal + price;
+  totalElement.textContent = 'Grand Total: $' + newTotal.toFixed(2);
+}
 </script>
 
 </body>
-
 </html>
